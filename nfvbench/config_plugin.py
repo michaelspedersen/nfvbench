@@ -18,13 +18,11 @@
 This module is used to override the configuration with platform specific constraints and extensions
 """
 import abc
-import specs
+from . import specs
 
 
-class ConfigPluginBase(object):
+class ConfigPluginBase(object, metaclass=abc.ABCMeta):
     """Base class for config plugins."""
-
-    __metaclass__ = abc.ABCMeta
 
     class InitializationFailure(Exception):
         """Used in case of any init failure."""

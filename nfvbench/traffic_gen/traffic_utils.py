@@ -54,10 +54,9 @@ def convert_rates(l2frame_size, rate, intf_speed):
         pps = bps_to_pps(bps, avg_packet_size)
     else:
         raise Exception('Traffic config needs to have a rate type key')
-
     return {
         'initial_rate_type': initial_rate_type,
-        'rate_pps': int(pps),
+        'rate_pps': int(float(pps)),
         'rate_percent': load,
         'rate_bps': int(bps)
     }
@@ -185,7 +184,7 @@ def to_rate_str(rate):
 
 def nan_replace(d):
     """Replaces every occurence of 'N/A' with float nan."""
-    for k, v in d.iteritems():
+    for k, v in d.items():
         if isinstance(v, dict):
             nan_replace(v)
         elif v == 'N/A':
@@ -200,5 +199,5 @@ def mac_to_int(mac):
 def int_to_mac(i):
     """Converts integer representation of MAC address to hex string."""
     mac = format(i, 'x').zfill(12)
-    blocks = [mac[x:x + 2] for x in xrange(0, len(mac), 2)]
+    blocks = [mac[x:x + 2] for x in range(0, len(mac), 2)]
     return ':'.join(blocks)

@@ -15,7 +15,7 @@
 #
 
 import json
-import Queue
+import queue
 from threading import Thread
 import uuid
 
@@ -23,13 +23,13 @@ from flask import Flask
 from flask import jsonify
 from flask import request
 
-from summarizer import NFVBenchSummarizer
+from .summarizer import NFVBenchSummarizer
 
-from log import LOG
-from utils import byteify
-from utils import RunLock
+from .log import LOG
+from .utils import byteify
+from .utils import RunLock
 
-from __init__ import __version__
+from .__init__ import __version__
 
 STATUS_OK = 'OK'
 STATUS_ERROR = 'ERROR'
@@ -57,7 +57,7 @@ def get_uuid():
 
 class Ctx(object):
     MAXLEN = 5
-    run_queue = Queue.Queue()
+    run_queue = queue.Queue()
     busy = False
     result = None
     results = {}
@@ -200,7 +200,7 @@ class WebServer(object):
             # print config
             try:
                 # remove unfilled values as we do not want them to override default values with None
-                config = {k: v for k, v in config.items() if v is not None}
+                config = {k: v for k, v in list(config.items()) if v is not None}
                 with RunLock():
                     if self.fluent_logger:
                         self.fluent_logger.start_new_run()

@@ -16,7 +16,7 @@ import abc
 import sys
 
 from nfvbench.log import LOG
-import traffic_utils
+from . import traffic_utils
 
 
 class Latency(object):
@@ -27,7 +27,7 @@ class Latency(object):
 
         latency_list: aggregate all latency values from list if not None
         """
-        self.min_usec = sys.maxint
+        self.min_usec = sys.maxsize
         self.max_usec = 0
         self.avg_usec = 0
         self.hdrh = None
@@ -42,7 +42,7 @@ class Latency(object):
 
     def available(self):
         """Return True if latency information is available."""
-        return self.min_usec != sys.maxint
+        return self.min_usec != sys.maxsize
 
 
 class TrafficGeneratorException(Exception):

@@ -54,10 +54,10 @@ from neutronclient.neutron import client as neutronclient
 from novaclient.client import Client
 
 from attrdict import AttrDict
-from chain_router import ChainRouter
-import compute
-from log import LOG
-from specs import ChainType
+from .chain_router import ChainRouter
+from . import compute
+from .log import LOG
+from .specs import ChainType
 # Left and right index for network and port lists
 LEFT = 0
 RIGHT = 1
@@ -1317,7 +1317,7 @@ class ChainManager(object):
         return: the hypervisor where the matching port runs or None if not found
         """
         # _existing_ports is a dict of list of ports indexed by network id
-        for port_list in self.get_existing_ports().values():
+        for port_list in list(self.get_existing_ports().values()):
             for port in port_list:
                 try:
                     if port['mac_address'] == mac:

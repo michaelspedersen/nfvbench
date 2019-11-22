@@ -13,8 +13,8 @@
 #    under the License.
 
 from nfvbench.log import LOG
-from traffic_base import AbstractTrafficGenerator
-import traffic_utils as utils
+from .traffic_base import AbstractTrafficGenerator
+from . import traffic_utils as utils
 
 
 class DummyTG(AbstractTrafficGenerator):

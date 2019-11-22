@@ -39,7 +39,7 @@ import time
 from netaddr import IPAddress
 from netaddr import IPNetwork
 
-from log import LOG
+from .log import LOG
 
 
 class ChainException(Exception):
