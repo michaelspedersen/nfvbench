@@ -58,7 +58,7 @@ def convert_rates(l2frame_size, rate, intf_speed):
         'initial_rate_type': initial_rate_type,
         'rate_pps': int(float(pps)),
         'rate_percent': load,
-        'rate_bps': int(bps)
+        'rate_bps': int(float(bps))
     }
 
 
