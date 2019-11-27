@@ -40,9 +40,6 @@ from .utils import cast_integer
 class TrafficClientException(Exception):
     """Generic traffic client exception."""
 
-    pass
-
-
 class TrafficRunner(object):
     """Serialize various steps required to run traffic."""
 
@@ -269,7 +266,7 @@ class Device(object):
         #   calculated as (total_flows + chain_count - 1) / chain_count
         # - the first chain will have the remainder
         # example 11 flows and 3 chains => 3, 4, 4
-        flows_per_chain = (self.flow_count + self.chain_count - 1) / self.chain_count
+        flows_per_chain = int((self.flow_count + self.chain_count - 1) / self.chain_count)
         cur_chain_flow_count = int(self.flow_count - flows_per_chain * (self.chain_count - 1))
         peer = self.get_peer_device()
         self.ip_block.reset_reservation()
@@ -317,7 +314,7 @@ class Device(object):
     @staticmethod
     def int_to_ip(nvalue):
         """Convert an IP address from numeric to string."""
-        return socket.inet_ntoa(struct.pack("!I", nvalue))
+        return socket.inet_ntoa(struct.pack("!I", int(nvalue)))
 
 
 class GeneratorConfig(object):
@@ -420,7 +417,7 @@ class GeneratorConfig(object):
             raise TrafficClientException('Dest MAC list %s must have %d entries' %
                                          (dest_macs, self.config.service_chain_count))
         self.devices[port_index].set_vtep_dst_mac(dest_macs)
-        LOG.info('Port %d: vtep dst MAC %s', port_index, set([str(mac) for mac in dest_macs]))
+        LOG.info('Port %d: vtep dst MAC %s', port_index, {str(mac) for mac in dest_macs})
 
     def get_dest_macs(self):
         """Return the list of dest macs indexed by port."""
@@ -533,7 +530,7 @@ class TrafficClient(object):
         if len(matching_profiles) > 1:
             raise TrafficClientException('Multiple traffic profiles with name: ' +
                                          traffic_profile_name)
-        elif not matching_profiles:
+        if not matching_profiles:
             raise TrafficClientException('Cannot find traffic profile: ' + traffic_profile_name)
         return matching_profiles[0].l2frame_size
 
@@ -594,7 +591,7 @@ class TrafficClient(object):
                                 e2e=True)
         # ensures enough traffic is coming back
         retry_count = int((self.config.check_traffic_time_sec +
-                       self.config.generic_poll_sec - 1) / self.config.generic_poll_sec)
+                           self.config.generic_poll_sec - 1) / self.config.generic_poll_sec)
 
         # we expect to see packets coming from 2 unique MAC per chain
         # because there can be flooding in the case of shared net
@@ -760,7 +757,7 @@ class TrafficClient(object):
                 stats[port]['rx']['max_delay_usec'])
             retDict[port]['drop_rate_percent'] = self.__get_dropped_rate(retDict[port])
 
-        ports = sorted(retDict.keys(), key=lambda x: str(x))
+        ports = sorted(retDict.keys(), key=str)
         if self.run_config['bidirectional']:
             retDict['overall'] = {'tx': {}, 'rx': {}}
             for key in tx_keys:

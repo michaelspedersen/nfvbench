@@ -77,9 +77,6 @@ BOOT_SCRIPT_PATHNAME = os.path.join(os.path.dirname(os.path.abspath(__file__)),
 class ChainException(Exception):
     """Exception while operating the chains."""
 
-    pass
-
-
 class NetworkEncaps(object):
     """Network encapsulation."""
 
@@ -655,8 +652,8 @@ class ChainVnf(object):
                     # here we MUST wait until this instance is resolved otherwise subsequent
                     # VNF creation can be placed in other hypervisors!
                     config = self.manager.config
-                    max_retries = (config.check_traffic_time_sec +
-                                   config.generic_poll_sec - 1) / config.generic_poll_sec
+                    max_retries = int((config.check_traffic_time_sec +
+                                       config.generic_poll_sec - 1) / config.generic_poll_sec)
                     retry = 0
                     for retry in range(max_retries):
                         status = self.get_status()

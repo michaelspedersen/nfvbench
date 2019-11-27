@@ -97,7 +97,7 @@ class Formatter(object):
     def standard(data):
         if isinstance(data, int):
             return Formatter.int(data)
-        elif isinstance(data, float):
+        if isinstance(data, float):
             return Formatter.float(4)(data)
         return Formatter.fixed(data)
 
@@ -130,7 +130,7 @@ class Formatter(object):
     def percentage(data):
         if data is None:
             return ''
-        elif math.isnan(data):
+        if math.isnan(data):
             return '-'
         return Formatter.suffix('%')(Formatter.float(4)(data))
 

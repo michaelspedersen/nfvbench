@@ -102,15 +102,14 @@ class Ctx(object):
             except KeyError:
                 return None
 
-            if Ctx.result and request_id == Ctx.result['request_id']:
+            if Ctx.result and request_id == Ctx.results['request_id']:
                 Ctx.result = None
 
             return res
-        else:
-            res = Ctx.result
-            if res:
-                Ctx.result = None
-            return res
+        res = Ctx.result
+        if res:
+            Ctx.result = None
+        return res
 
     @staticmethod
     def is_busy():
@@ -159,20 +158,18 @@ def setup_flask():
                 return jsonify(res)
             # result for given request_id not found
             return jsonify(result_json(STATUS_NOT_FOUND, not_found_msg, request_id))
-        else:
-            if Ctx.is_busy():
-                # task still pending, return with request_id
-                return jsonify(result_json(STATUS_PENDING,
-                                           pending_msg,
-                                           Ctx.get_current_request_id()))
+        if Ctx.is_busy():
+            # task still pending, return with request_id
+            return jsonify(result_json(STATUS_PENDING,
+                                       pending_msg,
+                                       Ctx.get_current_request_id()))
 
-            res = Ctx.get_result()
-            if res:
-                return jsonify(res)
-            return jsonify(not_busy_json)
+        res = Ctx.get_result()
+        if res:
+            return jsonify(res)
+        return jsonify(not_busy_json)
 
     return app
-
 
 class WebServer(object):
     """This class takes care of the web server. Caller should simply create an instance

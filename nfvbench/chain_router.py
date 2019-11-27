@@ -45,9 +45,6 @@ from .log import LOG
 class ChainException(Exception):
     """Exception while operating the chains."""
 
-    pass
-
-
 class ChainRouter(object):
     """Could be a shared router across all chains or a chain private router."""
 

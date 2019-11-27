@@ -48,9 +48,6 @@ class Latency(object):
 class TrafficGeneratorException(Exception):
     """Exception for traffic generator."""
 
-    pass
-
-
 class AbstractTrafficGenerator(object):
 
     def __init__(self, traffic_client):
@@ -106,7 +103,6 @@ class AbstractTrafficGenerator(object):
 
     def clear_streamblock(self):
         """Clear all streams from the traffic generator."""
-        pass
 
     @abc.abstractmethod
     def resolve_arp(self):
@@ -116,7 +112,6 @@ class AbstractTrafficGenerator(object):
                 else a dict of list of dest macs indexed by port#
                 the dest macs in the list are indexed by the chain id
         """
-        pass
 
     @abc.abstractmethod
     def get_macs(self):
@@ -124,7 +119,6 @@ class AbstractTrafficGenerator(object):
 
         return: a list of MAC addresses indexed by the port#
         """
-        pass
 
     @abc.abstractmethod
     def get_port_speed_gbps(self):
@@ -132,4 +126,3 @@ class AbstractTrafficGenerator(object):
 
         return: a list of speed in Gbps indexed by the port#
         """
-        pass

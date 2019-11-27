@@ -32,7 +32,7 @@ from .chain_runner import ChainRunner
 from .cleanup import Cleaner
 from .config import config_load
 from .config import config_loads
-from . import credentials as credentials
+from . import credentials
 from .fluentd import FluentLogHandler
 from . import log
 from .log import LOG

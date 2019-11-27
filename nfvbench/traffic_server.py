@@ -119,7 +119,7 @@ class TRexTrafficServer(TrafficServer):
                     try:
                         threads = ",".join([repr(thread) for thread in core.threads])
                     except TypeError:
-                        LOG.warn("No threads defined for socket %s", core.socket)
+                        LOG.warning("No threads defined for socket %s", core.socket)
                     core_result = """
                   - socket : {socket}
                     threads : [{threads}]""".format(socket=core.socket, threads=threads)

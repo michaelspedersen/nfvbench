@@ -27,8 +27,6 @@ class ConfigPluginBase(object, metaclass=abc.ABCMeta):
     class InitializationFailure(Exception):
         """Used in case of any init failure."""
 
-        pass
-
     def __init__(self, config):
         """Save configuration."""
         if not config:
@@ -95,7 +93,6 @@ class ConfigPlugin(ConfigPluginBase):
 
     def validate_config(self, config, openstack_spec):
         """Nothing to validate by default."""
-        pass
 
     def prepare_results_config(self, cfg):
         """Nothing to add the results by default."""

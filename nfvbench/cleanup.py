@@ -22,7 +22,7 @@ from novaclient.client import Client
 from novaclient.exceptions import NotFound
 from tabulate import tabulate
 
-from . import credentials as credentials
+from . import credentials
 from .log import LOG
 
 

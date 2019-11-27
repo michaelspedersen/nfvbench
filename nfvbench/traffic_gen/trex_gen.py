@@ -25,12 +25,6 @@ from nfvbench.traffic_server import TRexTrafficServer
 from nfvbench.utils import cast_integer
 from nfvbench.utils import timeout
 from nfvbench.utils import TimeoutError
-from .traffic_base import AbstractTrafficGenerator
-from .traffic_base import TrafficGeneratorException
-from . import traffic_utils as utils
-from .traffic_utils import IMIX_AVG_L2_FRAME_SIZE
-from .traffic_utils import IMIX_L2_SIZES
-from .traffic_utils import IMIX_RATIOS
 
 # pylint: disable=import-error
 from trex.common.services.trex_service_arp import ServiceARP
@@ -57,8 +51,14 @@ from trex.stl.api import ThreeBytesField
 from trex.stl.api import UDP
 from trex.stl.api import XByteField
 
-
 # pylint: enable=import-error
+
+from .traffic_base import AbstractTrafficGenerator
+from .traffic_base import TrafficGeneratorException
+from . import traffic_utils as utils
+from .traffic_utils import IMIX_AVG_L2_FRAME_SIZE
+from .traffic_utils import IMIX_L2_SIZES
+from .traffic_utils import IMIX_RATIOS
 
 class VXLAN(Packet):
     """VxLAN class."""
@@ -615,7 +615,7 @@ class TRex(AbstractTrafficGenerator):
                     self.client.release(ports=ports)
                 self.client.server_shutdown()
             except STLError as e:
-                LOG.warn('Unable to stop TRex. Error: %s', e)
+                LOG.warning('Unable to stop TRex. Error: %s', e)
         else:
             LOG.info('Using remote TRex. Unable to stop TRex')
 
@@ -680,12 +680,12 @@ class TRex(AbstractTrafficGenerator):
                     arp_dest_macs[port] = dst_macs
                     LOG.info('ARP resolved successfully for port %s', port)
                     break
-                else:
-                    retry = attempt + 1
-                    LOG.info('Retrying ARP for: %s (retry %d/%d)',
-                             unresolved, retry, self.config.generic_retry_count)
-                    if retry < self.config.generic_retry_count:
-                        time.sleep(self.config.generic_poll_sec)
+
+                retry = attempt + 1
+                LOG.info('Retrying ARP for: %s (retry %d/%d)',
+                         unresolved, retry, self.config.generic_retry_count)
+                if retry < self.config.generic_retry_count:
+                    time.sleep(self.config.generic_poll_sec)
             else:
                 LOG.error('ARP timed out for port %s (resolved %d out of %d)',
                           port,

@@ -112,23 +112,22 @@ def parse_rate_str(rate_str):
             rate_pps = rate_pps[:-1]
         except KeyError:
             multiplier = 1
-        rate_pps = int(rate_pps.strip()) * multiplier
+        rate_pps = int(float(rate_pps.strip()) * multiplier)
         if rate_pps <= 0:
             raise Exception('%s is out of valid range' % rate_str)
         return {'rate_pps': str(rate_pps)}
-    elif rate_str.endswith('ps'):
+    if rate_str.endswith('ps'):
         rate = rate_str.replace('ps', '').strip()
         bit_rate = bitmath.parse_string(rate).bits
         if bit_rate <= 0:
             raise Exception('%s is out of valid range' % rate_str)
         return {'rate_bps': str(int(bit_rate))}
-    elif rate_str.endswith('%'):
+    if rate_str.endswith('%'):
         rate_percent = float(rate_str.replace('%', '').strip())
         if rate_percent <= 0 or rate_percent > 100.0:
             raise Exception('%s is out of valid range (must be 1-100%%)' % rate_str)
         return {'rate_percent': str(rate_percent)}
-    else:
-        raise Exception('Unknown rate string format %s' % rate_str)
+    raise Exception('Unknown rate string format %s' % rate_str)
 
 def get_load_from_rate(rate_str, avg_frame_size=64, line_rate='10Gbps'):
     '''From any rate string (with unit) return the corresponding load (in % unit)
@@ -171,10 +170,10 @@ def to_rate_str(rate):
     if 'rate_pps' in rate:
         pps = rate['rate_pps']
         return '{}pps'.format(pps)
-    elif 'rate_bps' in rate:
+    if 'rate_bps' in rate:
         bps = rate['rate_bps']
         return '{}bps'.format(bps)
-    elif 'rate_percent' in rate:
+    if 'rate_percent' in rate:
         load = rate['rate_percent']
         return '{}%'.format(load)
     assert False
