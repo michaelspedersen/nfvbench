@@ -760,7 +760,7 @@ class TrafficClient(object):
                 stats[port]['rx']['max_delay_usec'])
             retDict[port]['drop_rate_percent'] = self.__get_dropped_rate(retDict[port])
 
-        ports = sorted(retDict.keys(), key=str)
+        ports = sorted(list(retDict.keys()), key=str)
         if self.run_config['bidirectional']:
             retDict['overall'] = {'tx': {}, 'rx': {}}
             for key in tx_keys:
